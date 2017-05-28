@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8"/>
+    <title>로그인 테스트</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+<form id="frm" name="frm" method="post">
+    <div id="header"></div>
+    <div id="content">
+<% if(session != null && session.usrId != null) {%>
+        <b>userId : <%=session.user.userId%></b><br/>
+        <b>userPwd : <%=session.user.userPwd%></b><br/>
+        <b>userName : <%=session.user.userName%></b><br/><br/><br/>
+        <a href="/login/logout">로그아웃</a>
+<% } else {%>
+        <div>아이디 : <input type="text" id="userId" name="userId" value=""/></div>
+        <div>비밀번호 : <input type="password" id="userPwd" name="userPwd" value=""/></div>
+        <div><input type="button" id="submitBtn" name="submitBtn" value="전송"/></div>
+<% } %>
+    </div>
+    <div id="footer"></div>
+</form>
+<script type="text/javascript">
+$(function() {
+    var result = "<%=result%>";
+    if(result=="err1") {
+        alert("아이디가 없습니다!");
+        $("#userId").focus();
+    } else if(result=="err2") {
+        alert("비밀번호가 맞지 않습니다!");
+        $("#userPwd").focus();
+    }
+
+
+    $("#submitBtn").on('click', function(e) {
+       e.preventDefault();
+
+        /*
+        var setData = {'userId' : $("#userId").val(), 'userPwd' : $("#userPwd").val()};
+        $.ajax({
+          url : '/login/process',
+          type : 'post',
+          data : setData,
+          success : function(data) {
+            var result = data.result;
+              if(result=='OK') {
+                  location.href = "/login/result";
+              } else {
+                  if(data.result=='err1') {
+                      alert("입력한 아이디가 정확하지 않습니다!");
+                      $("#userId").focus();
+                  }
+                  if(data.result=='err2') {
+                      alert("입력한 비밀번호가 정확하지 않습니다!");
+                      $("#userPwd").focus();
+                  }
+              }
+          },
+          error : function(err) {
+              alert(err);
+          }
+
+        });
+        */
+        $("#frm").attr("action","/login/process");
+        $("#frm").submit();
+
+
+    });
+
+});
+</script>
+</body>
+</html>
